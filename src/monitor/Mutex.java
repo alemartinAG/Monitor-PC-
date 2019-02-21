@@ -10,14 +10,14 @@ public class Mutex {
 		semaforo = new Semaphore(1); //TODO: Fairness
 	}
 	
-	public void acquire() {
-		
+	public boolean acquire() {
 		try {
 			semaforo.acquire();
+			return true;
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			return false;
 		}
-		
 	}
 	
 	public void release() {
