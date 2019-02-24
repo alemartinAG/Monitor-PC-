@@ -10,12 +10,10 @@ public class RdP {
 	
 	private Vector<int[]> petriMatrix; 
 	
-
-	
 	public RdP() {
 		
 		petriMatrix = new Vector<int[]>();
-		petriMatrix = getMatrix();
+		petriMatrix = getParsedMatrix();
 		
 		System.out.printf("\nCombined incidence matrix:\n\n");
 		
@@ -23,31 +21,26 @@ public class RdP {
 			for(int j=0; j<petriMatrix.get(i).length; j++) {
 				System.out.printf("%2d ", petriMatrix.get(i)[j]);
 			}
-			
 			System.out.println(" ");
 		}
-		
 	}
+	
 	
 	public void sensibilizadas(){
 		
 	}
+	
 	
 	public boolean disparar(){
 		
 		return false;
 	}
 	
-	private Vector<int[]> getMatrix(){
+	
+	private String getTextFromFile() {
 		
-		BufferedReader br;
 		String textfile = "";
-		
-		final String BEG = "Combined incidence matrix"; 
-		final String END = "Inhibition matrix";
-		final String CELL = "\"cell\">";
-		
-		int columnas = 0;
+		BufferedReader br;
 		
 		try{
 			
@@ -62,15 +55,36 @@ public class RdP {
 		    }
 		    
 		    textfile = sb.toString();
-		    textfile = textfile.substring(textfile.indexOf(BEG), textfile.indexOf(END));
-		    textfile = textfile.substring(textfile.indexOf(CELL)+CELL.length());
 		    
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		//Cuenta la cantidad de columnas
+		return textfile;
+	}
+	
+	
+	private Vector<int[]> getParsedMatrix(){
+		
+		final String BEG = "Combined incidence matrix"; 
+		final String END = "Inhibition matrix";
+		final String CELL = "\"cell\">";
 		final String KEYWRD = "colhead";
+		
+		Vector<int[]> matriz = new Vector<int[]>();
+		
+		int columnas = 0;
+		
+		String textfile = "";
+		
+		textfile = getTextFromFile();
+		
+		//genero un substring de la porcion del texto que me interesa
+		textfile = textfile.substring(textfile.indexOf(BEG), textfile.indexOf(END));
+	    textfile = textfile.substring(textfile.indexOf(CELL)+CELL.length());
+		
+		
+	    //Cuento la cantidad de columnas de la matriz
 		String colheads = textfile.substring(0, textfile.indexOf("rowhead"));
 		
 		while(true) {
@@ -89,14 +103,13 @@ public class RdP {
 			columnas++;
 		}
 		
-		//System.out.printf("\nCantidad de columnas = %d\n\n", columnas);
 		
-		Vector<int[]> matriz = new Vector<int[]>();
-		
-		
+		/*Genero filas con los numeros parseados y luego
+		 *agrego las mismas a la matriz de una por vez
+		 */
 		while(true) {
 			
-			int[] col = new int[columnas];
+			int[] row = new int[columnas];
 			
 			for(int i=0; i<columnas; i++) {
 				
@@ -106,21 +119,20 @@ public class RdP {
 					textfile = textfile.substring(textfile.indexOf(CELL));
 					
 					String number = textfile.substring(CELL.length(), textfile.indexOf("</")).trim();
-					col[i] = Integer.parseInt(number);
+					row[i] = Integer.parseInt(number);
 					
 					textfile = textfile.substring(textfile.indexOf(CELL)+CELL.length());
 					
 				} catch(IndexOutOfBoundsException e) {
-					matriz.add(col);
+					matriz.add(row);
 					return matriz;
 				}
 				
 			}
 			
-			matriz.add(col);
-			
-		}
-		
+			matriz.add(row);	
+		}	
 	}
+	
 	
 }
