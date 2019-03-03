@@ -12,8 +12,9 @@ public class RdP {
 	
 	public RdP() {
 		
+		
 		petriMatrix = new Vector<int[]>();
-		petriMatrix = getParsedMatrix();
+		petriMatrix = getParsedMatrix("Combined incidence matrix", "Inhibition matrix");
 		
 		System.out.printf("\nCombined incidence matrix:\n\n");
 		
@@ -37,37 +38,15 @@ public class RdP {
 	}
 	
 	
-	private String getTextFromFile() {
+	//TODO:Ver si se puede dejar privado
+	public Vector<int[]> getParsedMatrix(String desde, String hasta){
 		
-		String textfile = "";
-		BufferedReader br;
+		/*final String BEG = "Combined incidence matrix"; 
+		final String END = "Inhibition matrix";*/
 		
-		try{
-			
-			br = new BufferedReader(new FileReader("/home/ale/Repositorios/Monitor-PC-/src/monitor/Matrix.html"));
-		    StringBuilder sb = new StringBuilder();
-		    String line = br.readLine();
-
-		    while (line != null) {
-		        sb.append(line);
-		        sb.append(System.lineSeparator());
-		        line = br.readLine();
-		    }
-		    
-		    textfile = sb.toString();
-		    
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		String BEG = desde;
+		String END = hasta;
 		
-		return textfile;
-	}
-	
-	
-	private Vector<int[]> getParsedMatrix(){
-		
-		final String BEG = "Combined incidence matrix"; 
-		final String END = "Inhibition matrix";
 		final String CELL = "\"cell\">";
 		final String KEYWRD = "colhead";
 		
@@ -132,6 +111,33 @@ public class RdP {
 			
 			matriz.add(row);	
 		}	
+	}
+	
+	
+	private String getTextFromFile() {
+		
+		String textfile = "";
+		BufferedReader br;
+		
+		try{
+			
+			br = new BufferedReader(new FileReader("/home/ale/Repositorios/Monitor-PC-/src/monitor/Matrix.html"));
+		    StringBuilder sb = new StringBuilder();
+		    String line = br.readLine();
+
+		    while (line != null) {
+		        sb.append(line);
+		        sb.append(System.lineSeparator());
+		        line = br.readLine();
+		    }
+		    
+		    textfile = sb.toString();
+		    
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return textfile;
 	}
 	
 	

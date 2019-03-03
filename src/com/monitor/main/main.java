@@ -1,4 +1,6 @@
-package monitor;
+package com.monitor.main;
+
+import monitor.GestorDeMonitor;
 
 public class main {
 
