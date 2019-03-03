@@ -12,18 +12,16 @@ public class RdP {
 	
 	public RdP() {
 		
-		
 		petriMatrix = new Vector<int[]>();
-		petriMatrix = getParsedMatrix("Combined incidence matrix", "Inhibition matrix");
+		petriMatrix = getParsedMatrix("Combined incidence matrix", "Inhibition matrix", "/home/ale/Repositorios/Monitor-PC-/src/monitor/Matrix.html");
 		
-		System.out.printf("\nCombined incidence matrix:\n\n");
-		
+		/*System.out.printf("\nCombined incidence matrix:\n\n");
 		for(int i=0; i<petriMatrix.size(); i++) {
 			for(int j=0; j<petriMatrix.get(i).length; j++) {
 				System.out.printf("%2d ", petriMatrix.get(i)[j]);
 			}
 			System.out.println(" ");
-		}
+		}*/
 	}
 	
 	
@@ -39,7 +37,9 @@ public class RdP {
 	
 	
 	//TODO:Ver si se puede dejar privado
-	public Vector<int[]> getParsedMatrix(String desde, String hasta){
+	public Vector<int[]> getParsedMatrix(String desde, String hasta, String file){
+		
+		
 		
 		/*final String BEG = "Combined incidence matrix"; 
 		final String END = "Inhibition matrix";*/
@@ -56,7 +56,7 @@ public class RdP {
 		
 		String textfile = "";
 		
-		textfile = getTextFromFile();
+		textfile = getTextFromFile(file);
 		
 		//genero un substring de la porcion del texto que me interesa
 		textfile = textfile.substring(textfile.indexOf(BEG), textfile.indexOf(END));
@@ -100,10 +100,12 @@ public class RdP {
 					String number = textfile.substring(CELL.length(), textfile.indexOf("</")).trim();
 					row[i] = Integer.parseInt(number);
 					
+					
+					
 					textfile = textfile.substring(textfile.indexOf(CELL)+CELL.length());
 					
 				} catch(IndexOutOfBoundsException e) {
-					matriz.add(row);
+					//matriz.add(row);
 					return matriz;
 				}
 				
@@ -114,14 +116,14 @@ public class RdP {
 	}
 	
 	
-	private String getTextFromFile() {
+	private String getTextFromFile(String file) {
 		
 		String textfile = "";
 		BufferedReader br;
 		
 		try{
 			
-			br = new BufferedReader(new FileReader("/home/ale/Repositorios/Monitor-PC-/src/monitor/Matrix.html"));
+			br = new BufferedReader(new FileReader(file));
 		    StringBuilder sb = new StringBuilder();
 		    String line = br.readLine();
 

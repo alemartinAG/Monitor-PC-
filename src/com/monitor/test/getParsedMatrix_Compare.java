@@ -12,16 +12,16 @@ import monitor.RdP;
 
 class getParsedMatrix_Compare {
 	
-	RdP petri;
-	
 	int[][] matriz_1 = {
-			{0, 0, 0},
-			{0, 0, 0}
+			{-1, 1},
+			{1, -1},
+			{0,  0}
 		};
 
 	int[][] matriz_2 = {
-			{0, 0, 0},
-			{0, 0, 0}
+			{1, 0},
+			{0, 1},
+			{1,	0},
 		};
 	
 	String desde_1;
@@ -30,23 +30,25 @@ class getParsedMatrix_Compare {
 	String desde_2;
 	String hasta_2;
 	
-	@Before
-	public void setUp() {
-		
-	petri = new RdP();
-	
-	desde_1 = "";
-	hasta_1 = "";
-	
-	desde_2 = "";
-	hasta_2 = "";
-	
-	}
+	String path;
 
 	@Test
 	void test() {
 		
-		Vector<int[]> parsedMatrix = petri.getParsedMatrix(desde_1, hasta_1);
+		desde_1 = "Combined incidence matrix";
+		hasta_1 = "Inhibition matrix";
+		
+		desde_2 = "Backwards incidence matrix";
+		hasta_2 = desde_1;
+		
+		path = "/home/ale/Repositorios/Monitor-PC-/src/com/monitor/test/test_net.html";
+		
+		RdP petri = new RdP();
+		
+		//Verifico Matriz de Incidencia Combinada
+		
+		Vector<int[]> parsedMatrix = new Vector<int[]>();
+		parsedMatrix = petri.getParsedMatrix(desde_1, hasta_1, path);
 		
 		for(int i=0; i<parsedMatrix.size(); i++) {
 			for(int j=0; j<parsedMatrix.get(i).length; j++) {
@@ -55,6 +57,21 @@ class getParsedMatrix_Compare {
 				
 			}
 		}
+		
+		
+		//Verifico Matriz de Incidencia Invertida
+		
+		parsedMatrix = petri.getParsedMatrix(desde_2, hasta_2, path);
+		
+		for(int i=0; i<parsedMatrix.size(); i++) {
+			for(int j=0; j<parsedMatrix.get(i).length; j++) {
+				
+				Assert.assertEquals(matriz_2[i][j], parsedMatrix.get(i)[j]);
+				
+			}
+		}
+		
+		
 		
 	}
 
