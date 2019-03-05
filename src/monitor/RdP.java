@@ -8,20 +8,18 @@ import java.util.Vector;
 
 public class RdP {
 	
-	private Vector<int[]> petriMatrix; 
+	private Vector<int[]> petriMatrix;
 	
 	public RdP() {
 		
 		petriMatrix = new Vector<int[]>();
-		petriMatrix = getParsedMatrix("Combined incidence matrix", "Inhibition matrix", "/home/ale/Repositorios/Monitor-PC-/src/monitor/Matrix.html");
 		
-		/*System.out.printf("\nCombined incidence matrix:\n\n");
-		for(int i=0; i<petriMatrix.size(); i++) {
-			for(int j=0; j<petriMatrix.get(i).length; j++) {
-				System.out.printf("%2d ", petriMatrix.get(i)[j]);
-			}
-			System.out.println(" ");
-		}*/
+		String from = "Combined incidence matrix";
+		String to = "Inhibition matrix";
+		String file = "/home/ale/Repositorios/Monitor-PC-/src/monitor/Matrix.html";
+		
+		petriMatrix = getParsedMatrix(from, to, file);
+		
 	}
 	
 	
@@ -37,12 +35,7 @@ public class RdP {
 	
 	
 	//TODO:Ver si se puede dejar privado
-	public Vector<int[]> getParsedMatrix(String desde, String hasta, String file){
-		
-		
-		
-		/*final String BEG = "Combined incidence matrix"; 
-		final String END = "Inhibition matrix";*/
+	public Vector<int[]> getParsedMatrix(String desde, String hasta, String archivo){
 		
 		String BEG = desde;
 		String END = hasta;
@@ -56,7 +49,7 @@ public class RdP {
 		
 		String textfile = "";
 		
-		textfile = getTextFromFile(file);
+		textfile = getTextFromFile(archivo);
 		
 		//genero un substring de la porcion del texto que me interesa
 		textfile = textfile.substring(textfile.indexOf(BEG), textfile.indexOf(END));
@@ -105,7 +98,6 @@ public class RdP {
 					textfile = textfile.substring(textfile.indexOf(CELL)+CELL.length());
 					
 				} catch(IndexOutOfBoundsException e) {
-					//matriz.add(row);
 					return matriz;
 				}
 				
