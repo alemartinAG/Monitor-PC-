@@ -27,7 +27,7 @@ public class GestorDeMonitor {
 		
 		while(k) {
 			
-			k = petrinet.disparar();
+			//k = petrinet.disparar();
 			
 			if(k) {
 				

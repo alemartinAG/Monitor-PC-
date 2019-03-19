@@ -6,19 +6,31 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Vector;
 
+
 public class RdP {
 	
+	private static final int INITIAL = 0;
+	private static final int CURRENT = 1;
+	
 	private Vector<int[]> petriMatrix;
+	private Vector<int[]> marking;
 	
 	public RdP() {
 		
 		petriMatrix = new Vector<int[]>();
+		marking = new Vector<int[]>();
 		
 		String from = "Combined incidence matrix";
 		String to = "Inhibition matrix";
 		String file = "/home/ale/Repositorios/Monitor-PC-/src/monitor/Matrix.html";
 		
 		petriMatrix = getParsedMatrix(from, to, file);
+		
+		marking = getParsedMatrix("Marking", "Enabled transitions", file);
+		
+		System.out.printf("\nMatriz de Marcado\n\n");
+		
+		disparar(2);
 		
 	}
 	
@@ -28,9 +40,28 @@ public class RdP {
 	}
 	
 	
-	public boolean disparar(){
+	public boolean disparar(int transicion){
 		
-		return false;
+		Vector<Integer> temp = new Vector<Integer>();
+		int suma = 0;
+		
+		System.out.printf("\ndisparo\n");
+		
+		for(int i=0; i<petriMatrix.size(); i++) {
+			suma = petriMatrix.get(i)[transicion] + marking.get(CURRENT)[i];
+			
+			if(suma < 0) {
+				return false;
+			}
+			
+			temp.add(suma);
+		}
+		
+		for(int i=0; i<marking.get(CURRENT).length; i++) {
+			marking.get(CURRENT)[i] = temp.get(i);
+		}
+		
+		return true;
 	}
 	
 	
