@@ -15,6 +15,9 @@ public class RdP {
 	private Vector<int[]> petriMatrix;
 	private Vector<int[]> marking;
 	
+	private int transitions = 0;
+	private int places = 0;
+	
 	public RdP() {
 		
 		petriMatrix = new Vector<int[]>();
@@ -22,20 +25,38 @@ public class RdP {
 		
 		String from = "Combined incidence matrix";
 		String to = "Inhibition matrix";
+		
 		String file = "/home/ale/Repositorios/Monitor-PC-/src/monitor/Matrix.html";
 		
 		petriMatrix = getParsedMatrix(from, to, file);
+
+		
+		//Guardo cantidad de lugares y transiciones
+		transitions = petriMatrix.get(0).length;
+		places = petriMatrix.size();
 		
 		marking = getParsedMatrix("Marking", "Enabled transitions", file);
 		
-		System.out.printf("\nMatriz de Marcado\n\n");
-		
-		disparar(2);
+		//disparar(2);
 		
 	}
 	
 	
-	public void sensibilizadas(){
+	public Vector<Integer> sensibilizadas(){
+		
+		//TODO: Preguntar al loco juli
+		
+		//Vector con numero de transiciones sensibilizadas
+		Vector<Integer> sensibilizadas = new Vector<Integer>();
+		
+		//Si la transición se puede disparar esta sensibilizada
+		for(int i=0; i<transitions; i++) {
+			if(disparar(i)) {
+				sensibilizadas.add(i);
+			}
+		}
+		
+		return sensibilizadas;
 		
 	}
 	
@@ -44,8 +65,6 @@ public class RdP {
 		
 		Vector<Integer> temp = new Vector<Integer>();
 		int suma = 0;
-		
-		System.out.printf("\ndisparo\n");
 		
 		for(int i=0; i<petriMatrix.size(); i++) {
 			suma = petriMatrix.get(i)[transicion] + marking.get(CURRENT)[i];
